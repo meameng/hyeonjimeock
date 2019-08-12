@@ -1,0 +1,249 @@
+*{ box-sizing: border-box; font-family: 'Nanum Gothic'}
+body{background: rgb(241, 241, 241); overflow-x: hidden;}
+.headerwrap{height: 0; background: rgb(19, 53, 116); position: fixed; width: 100%; transition: all .5s ease; z-index: 999;}
+.headerwrap.over{height: 130px;}
+.header{background: #fff;display: flex;justify-content: space-around; align-items: center; }
+.logo a{display: block; width: 130px; height: 70px; background: url(img/logo.png); background-size: 100% 100%;}
+.navi{height: 80px;}
+.navi li > a{display: block; font-size: 18px; font-weight: 600; margin-right: 40px; height: 80px; line-height: 80px;position: relative;}
+.navi li{float: left;}
+.level2{position: absolute; width: 100%; height: 50px; left: 45%; text-align: center; display: none;}
+.level2 li > a{display: block; font-size: 15px; padding:0 20px;height: 50px; color: #fff; line-height: 50px;text-align: center; position: relative;}
+.level2 li > a:hover::after{position: absolute; left: 0; bottom: 0; content: ""; width: 100%; height: 3px;  background: #fff;}
+
+/*배너*/
+.mainbanner {width: 100%; height: 850px; background: url("webimg/mainbanner.jpg") no-repeat center; background-size: cover;
+position:relative;}
+.bannertext {position: absolute; top: 100px; right: -2%; text-align: center;}
+.bannertext > img {width: 85%;}
+
+.searchbar {width: 1100px; height:160px; position: absolute; bottom: -70px; left:50%; transform: translateX(-50%); 
+background: url("webimg/searchbar.png") no-repeat center; background-size: cover;}
+.searchbar select {width: 150px; height: 60px; border: 7px outset rgb(55, 55, 184); position: absolute; top: 30px; left: 100px;
+padding-left: 20px;}
+.searchbar input {position: absolute; left: 245px; top:30px; width: 700px; height: 60px; border: 7px outset rgb(55, 55, 184); 
+    border-radius: 7px; padding-left: 20px; font-size: 1.3em; background-image: url("webimg/searchicon.png"), url("webimg/bg_fff.jpg");
+    background-repeat: no-repeat, repeat; background-position: 640px center, center; background-size: 4% auto, 100%;}
+
+
+/*예고편*/
+#sec2{width: 100%; height: 760px; position: relative; display: flex; justify-content:space-around; overflow: hidden;}
+.tomato{width: 268px; height: 420px; background: url(img/img_main.png); position: absolute;top: 50px; left: 7%; z-index: 1; animation: leaf ease 5s infinite}
+@keyframes leaf{
+    0%{
+        transform: rotate(0deg)
+    }
+    50%{
+        transform: rotate(20deg)
+    }
+    100%{
+        transform: rotate(0deg)
+    }
+}
+.content{min-width: 1400px; margin: auto; z-index: 2;}
+.right{float: right;} .left{float: left; height: 528px; width: 600px; } 
+/* margin-right: -1500px; opacity: 0;margin-left: -800px;opacity: 0; */
+/* .content .left ul{position: relative;}  */
+.content .left ul li:nth-child(2){position: relative; width: 512px; height: 400px; background: url(img/tv.png) bottom no-repeat; margin: auto}
+.left ul li:nth-child(2) iframe{position: absolute; top: 74px; left: 46px;}
+/* .left .tit{padding-top: 60px} */
+.left .tit {padding-top: 25px; margin-bottom: -25px;}
+.slide{ position: relative; width: 780px; height: 346px; overflow: hidden;}
+.slide li{width: 100%; display: none}.slide li img{width: 100%; vertical-align: top}
+.slide li.on{display: block;}
+.slide_nav li{float: left; width: 260px; height: 173px; cursor: pointer;}
+.slide_nav li:nth-child(1){background: url(img/tab1.png) center; background-size: cover}
+.slide_nav li:nth-child(2){background: url(img/tab2.png) center; background-size: cover}
+.slide_nav li:nth-child(3){background: url(img/tab3.png) center; background-size: cover}
+
+
+/*레시피*/
+#sec3{width: 100%;overflow: hidden; padding: 60px 0; background: url(img/bg_content.gif); position: relative;}
+/* .menu{width: 1200px; margin: auto; overflow: hidden;} */
+.menu li{float: left; height: 330px; position: relative;} .menu li img{vertical-align: top}
+.cursor{cursor: pointer;}
+
+.btit{border-bottom: 3px solid #f95e00; font-size: 30px; padding-bottom: 10px; margin-bottom: 20px}
+/* .menu li:nth-child(6) span{width: 400px; height: 330px; position: absolute; top: 0; left: 0; background: url(img/up1.png); transition: all .3s ease; opacity: 0;} */
+/* .menu li:nth-child(6):hover span{opacity: 1;} */
+/* .menu li:nth-child(5) span{width: 400px; height: 330px; position: absolute; top: 0; left: 0; background: url(img/up2.png); transition: all .3s ease; opacity: 0;} */
+/* .menu li:nth-child(5):hover span{opacity: 1;} */
+
+/*팝업*/
+.pop{width: 850px; height: 630px;position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%); z-index: 10; background: #fff; padding: 30px; border-radius: 10px;display: none;}
+/* .swiper-container {
+    width: 100%;
+    height: 300px;
+    margin-left: auto;
+    margin-right: auto;
+} */
+.swiper-slide {
+    background-size: cover;
+    background-position: center;
+}
+.gallery-top {
+    height: 300px;
+    width: 100%;
+}
+.gallery-top .swiper-slide{
+    display: flex;
+    /* justify-content: space-between */
+}
+.gallery-thumbs {
+    height: 180px;
+    box-sizing: border-box;
+    padding: 10px 0;
+    margin-top: 30px!important;
+}
+.gallery-thumbs .swiper-slide {
+    width: 25%;
+    height: 100%;
+    opacity: 0.6;
+}
+.gallery-thumbs .swiper-slide p{font-size: 16px; text-align: center;width: 187px}
+.gallery-thumbs .swiper-slide-thumb-active {
+    opacity: 1;
+}
+u{display: block; width:30px; height: 30px; background-image: url(img/close2.png); background-position: center; background-size: cover; position: absolute; top: 25px; right: 30px; cursor: pointer;}
+.btit{border-bottom: 3px solid #f95e00; font-size: 30px; padding-bottom: 10px; margin-bottom: 20px}
+.visual{width: 300px; height: 300px;}
+.txt{ width: 450px; overflow: hidden; margin-left: 50px}
+.txt h3{font-size: 25px; margin: 0 0 10px 0}
+.txt p{font-size: 16px; }
+
+.recipe_title {position: absolute; top: 80px; left: 50%; transform: translateX(-50%); margin-left: -620px;}
+.da-thumbs {
+	list-style: none;
+	width: 1200px;
+	height: 600px;
+	position: relative; left: 50%; transform: translateX(-50%); margin-left: 60px;
+	padding: 0;
+}
+.da-thumbs li {
+	float: left;
+	/* margin: 5px;
+	background: #fff;
+	padding: 8px; */
+	position: relative;
+	/* box-shadow: 0 1px 3px rgba(0,0,0,0.1); */
+}
+
+.da-thumbs li:nth-child(1),.da-thumbs li:nth-child(7){width: 800px; height: 330px;}
+.da-thumbs li:nth-child(2),.da-thumbs li:nth-child(3),.da-thumbs li:nth-child(4),.da-thumbs li:nth-child(5),.da-thumbs li:nth-child(6){
+width: 400px; height: 330px;
+}
+
+.da-thumbs li a,
+.da-thumbs li a img {
+	display: block;
+	position: relative;
+}
+.da-thumbs li a {
+	overflow: hidden;
+}
+.da-thumbs li a div {
+	position: absolute;
+	background: #333;
+	background: #ffa137b7;
+	width: 100%;
+	height: 100%;
+}
+.da-thumbs li a div span {
+	display: block;
+	padding: 10px 0;
+	margin: 160px 20px 20px 20px;
+	text-transform: uppercase;
+	font-family: 'Nanum Gothic';
+	text-align: center;
+	font-weight: normal;
+	font-size: 30px;
+	font-weight: 600;
+	color: rgba(255,255,255,0.9);
+	text-shadow: 2px 2px 2px rgba(0,0,0,0.6);
+	border-bottom: 1px solid rgba(255,255,255,0.5);
+	/* box-shadow: 0 1px 0 rgba(0,0,0,0.1), 0 -10px 0 rgba(255,255,255,0.3); */
+}
+.da-thumbs li a div img{width: 60px; position: absolute; top: 40%; left: 50%; transform: translate(-50%,-50%)}
+
+/*지도*/
+.mapcontainer {width: 100%; height: 1005px; background: url("webimg/mapbg_blue.jpg"); background-size: 40% auto;}
+.mapwrap {width: 100%; height: 100%; margin: auto; position: relative;}
+.map {width: 58%; height: 95%; position: absolute; top: 50%; right: 0; transform: translateY(-50%); overflow: hidden;}
+.backmap {position: absolute; top: -209px; left: 95px; z-index: -50;}
+
+.map_subtt {width: 50%; height: 94px; position: absolute; top: 30px; left: 60px;}
+.map_subtt img {max-height: 100%; padding-right: 10px;}
+
+.trucks {width: 20px; height: 33px; background: url("webimg/gps_icon.png") no-repeat; background-size: cover; position: absolute; cursor: pointer;}
+.truckicon li.on {transform: scale(1.8); z-index: 9999; background: url("webimg/gps_icon_on.png") no-repeat; background-size: cover;}
+.hermosatk {top: 647px; left: 316px;}
+.grandparktk {top: 626px; left: 348px;}
+.northollywoodtk {top: 550px; left: 350px;}
+.angelcitytk {top: 630px; left: 410px;}
+.sixflagtk {top: 585px; left: 430px;}
+.smorgasburgtk {top: 600px; left: 450px;}
+.sparktk {top: 590px; left: 470px;}
+.hayesvalleytk {top: 270px; left: 280px;}
+.unplazatk {top: 310px; left: 320px;}
+.fortmasontk {top: 275px; left: 320px;}
+
+.placebtn {position: absolute; top: 165px; left: 30px; width: 48%; height: 200px; display: flex; 
+    justify-content: space-between; flex-wrap: wrap; align-content: space-between;}
+.placebtn li {width: 19%; height: 95px; border-radius: 10px; background-size: cover; background-position: center; cursor: pointer;
+transition: all 0.5s;}
+.placebtn li div {width: 100%; height: 100%; border-radius: 10px; background: rgba(0,0,0,0.5); display: flex; justify-content: center; 
+    align-items: center; color: #fff; font-size: 1.85em; text-align: center; line-height: 1.2; font-family: 'Squada One', cursive;
+transition: all 0.5s;}
+.placebtn li:nth-child(1) {display: none;}
+.placebtn li:nth-child(2) {background-image: url(webimg/bg_hermosa.jpg);}
+.placebtn li:nth-child(3) {background-image: url(webimg/bg_grandpark.jpg);}
+.placebtn li:nth-child(4) {background-image: url(webimg/bg_northhollywood.png);}
+.placebtn li:nth-child(5) {background-image: url(webimg/bg_angelcity.jpg);}
+.placebtn li:nth-child(6) {background-image: url(webimg/bg_sixflag.jpg);}
+.placebtn li:nth-child(7) {background-image: url(webimg/bg_smorgasbug.jpg);}
+.placebtn li:nth-child(8) {background-image: url(webimg/bg_spark.jpg);}
+.placebtn li:nth-child(9) {background-image: url(webimg/bg_hayesvalley.jpg);}
+.placebtn li:nth-child(10) {background-image: url(webimg/bg_unplaza.jpg);}
+.placebtn li:nth-child(11) {background-image: url(webimg/bg_fortmason.jpg);}
+
+.placebtn li.on div {opacity: 0;}
+
+.placebtn li:hover {background-size: 125%;}
+.placebtn li:hover div {background: rgba(0,0,0,0);}
+
+.maptext {position: absolute; top: 393px; left: 30px; width: 48%; height: 600px; z-index: 1; display: none;}
+
+.maptext h1 {color: #333; width: 50%; float: left; padding-left: 20px; font-weight: 900;}
+.maptext h1 span {font-size: 0.7em; font-weight: 400; display: block; margin-top: -4px;}
+.maptext h2 {width: 46%; color: #333; font-size: 1.1em; opacity: 0.6; text-align: right; float: right;}
+.maptext > p {width: 50%; height: 180px; line-height: 1.6; color: #333; font-size: 1.2em; float: left; padding: 20px;}
+.maptext iframe {width: 50%; height: 220px; float: right; margin-bottom: 10px; }
+.placeground {width: 100%; height: 320px; overflow: hidden; margin-bottom: 15px;}
+
+.placetext > li.on {display: block;}
+
+.hermosa .placeground {background: url("webimg/bg_hermosa.jpg") no-repeat center; background-size: cover;}
+.grandpark .placeground {background: url("webimg/bg_grandpark.jpg") no-repeat center; background-size: cover;}
+.northhollywood .placeground {background: url("webimg/bg_northhollywood.png") no-repeat center; background-size: cover;}
+.angelcity .placeground {background: url("webimg/bg_angelcity.jpg") no-repeat center; background-size: cover;}
+.sixflag .placeground {background: url("webimg/bg_sixflag.jpg") no-repeat center; background-size: cover;}
+.smorgasburg .placeground {background: url("webimg/bg_smorgasbug.jpg") no-repeat center; background-size: cover;}
+.spark .placeground {background: url("webimg/bg_spark.jpg") no-repeat center; background-size: cover;}
+.hayesvalley .placeground {background: url("webimg/bg_hayesvalley.jpg") no-repeat center; background-size: cover;}
+.unplaza .placeground {background: url("webimg/bg_unplaza.jpg") no-repeat center; background-size: cover;}
+.fortmason .placeground {background: url("webimg/bg_fortmason.jpg") no-repeat center; background-size: cover;}
+
+footer {height: 155px;}
+.footnav {width: 100%; margin: auto; height: 45px; border-top: 1px solid #b2b2b2; text-align: center; line-height: 45px;}
+.footnav ul li {display: inline; padding-right: 20px; }
+.footnav ul li a {color: #777;}
+.footnav ul li a:hover {color: #222;;}
+.footnav ul li:last-child {padding-right: none;}
+
+.addressbg {width: 100%; height: 110px; background: #eee;}
+.address {margin: auto; width: 1000px; height: 100%; display: flex; justify-content: space-between; align-items: center;}
+.cjlogo {width: 175px;}
+.cjlogo img {width: 100%;}
+.company {width: 800px; font-size: 0.9em;}
+
+

@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/reset.css">
+    <link rel="stylesheet" href="/css/jquery.mCustomScrollbar.css">
+    <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="/js/jquery.mCustomScrollbar.js"></script>
+    <title>레시피</title>
+</head>
+<style>
+*{box-sizing: border-box}
+body{background: rgb(236, 236, 236); font-family: 'Nanum Gothic'}
+.headerwrap{height: 0; background: rgb(19, 53, 116); position: absolute; top: 0; width: 100%; transition: all .5s ease; z-index: 999;}
+.headerwrap.over{height: 130px;}
+.header{background: #fff;display: flex;justify-content: space-around; align-items: center; }
+.logo a{display: block; width: 130px; height: 70px; background: url(img/logo.png); background-size: 100% 100%;}
+.navi{height: 80px;}
+.navi li > a{display: block; font-size: 18px; font-weight: 600; margin-right: 40px; height: 80px; line-height: 80px;position: relative;}
+.navi li{float: left;}
+.lev2{position: absolute; width: 100%; height: 50px; left: 45%; text-align: center; display: none;}
+.lev2 li > a{display: block; font-size: 15px; padding:0 20px;height: 50px; color: #fff; line-height: 50px;text-align: center; position: relative;}
+.lev2 li > a:hover::after{position: absolute; left: 0; bottom: 0; content: ""; width: 100%; height: 3px;  background: #fff;}
+
+.se2{position: relative;    margin-top: -40px;padding: 40px 0;}
+.se1{margin-top: 150px; text-align: center} .se1 h1{font-size: 3em}
+/* .wrap{height: 800px; width: 1360px; margin: auto;} */
+.menu{width: 1200px; height: 100px; background: #fff; position: relative; margin:60px auto 0 auto;}
+.menu .level1{float: left; width: 15%;height: 100%; cursor: pointer; 
+    font-size: 18px; text-align: center;padding-top: 60px; font-weight: bold;background-repeat: no-repeat;}
+.level1.on{background-color: #f66e00; color: #fff}
+.level1:nth-child(1){ background-image: url(img/icon1.png); background-size: 30%; background-position: 65px 12px}
+.level1:nth-child(2){ background-image: url(img/icon2.png); background-size: 24%;background-position: 68px 12px}
+.level1:nth-child(3){ background-image: url(img/icon3.png); background-size: 25%;background-position: 68px 12px}
+.level1:nth-child(4){ background-image: url(img/icon4.png); background-size: 30%;background-position: 62px 12px}
+
+.level2{position: absolute;top:100px; left: 0; width: 1200px; height: 100px; background: #f66e00;display: none;}
+.level2.on{display: block;}
+.level2 li{float: left; width: 15%;height: 100%;}
+.level2 li:hover a,.level2 li.on a{background:#fff; color:#f66e00; font-weight: bold}
+
+.level2 li a{padding-top:28px; display: block; width: 80px; height: 80px; border: 1px solid rgba(255, 255, 255, 0.856); border-radius: 50%;margin: auto; margin-top: 10px; font-size: 16px; color: #fff; font-weight: 400; transition: all .3s ease}
+.e{padding-top: 16px!important;}
+.level2 li:hover a{transform: scale(1.1)}
+a:hover{text-decoration: none}
+
+.mlist{width: 1200px; height: 500px;margin: 100px auto 0 auto;}
+.mlist .view{height: 100%; width: 100%; display: none; background: #fff;}
+.mlist .view.on{display: block;}
+/* .menu1 .view:nth-child(1){background: #fff}
+.menu1 .view:nth-child(2){background:burlywood}
+.menu1 .view:nth-child(3){background:cadetblue}
+.menu1 .view:nth-child(4){background:cornflowerblue} */
+
+.left, .right{width: 50%; height: 100%; overflow: hidden;}
+.left{float: left;} .right{float: right; padding: 40px 50px; position: relative;}
+.left img{width: 110%; height: 500px;}
+.right h1{font-size: 35px;} .right h3{font-size: 20px; margin: 10px 0 20px 0;}
+.right button{padding: 15px 25px; background: #fff; color:#f66e00; font-size: 18px; z-index: 22;
+border: 3px solid #f95e00; font-family: 'Nanum Gothic'; font-weight: bold; outline: none; transition: all .3s ease;
+position: absolute; bottom: 80px; right: 70px;}
+.right button:hover{background: #f66e00;color:#fff; }
+/* border: 3px dashed #000; margin: 0 10px 10px 0; */
+.food{overflow: hidden;}
+.food li{float: left; width:16.666%; height: 80px;  border-radius: 50%; padding-top: 5px}
+.food li:last-child{margin-right: 0}
+.food img{height:45px; width: 45px;margin-left: 18px} .food span{text-align: center; display: block; font-size: 16px; margin-top: -5px}
+
+.menu2,.menu3,.menu4{position: absolute; top: 200px; left: 50%; transform: translateX(-50%);}
+.menu2 .more,.menu3 .more,.menu4 .more{margin-top: -120px}
+.more{display: none;position: fixed; top: 50%;left: 50%; transform: translate(-50%,-50%); z-index: 60; width: 800px; padding:20px 30px; text-align: center;
+    height: 700px;background: #fff; border: 3px solid #f95e00; border-radius: 10px}
+u{display: block; width:30px; height: 30px; background-image: url(img/close2.png); background-position: center; background-size: cover; position: fixed; top: 25px; right: 30px; cursor: pointer;}
+.more p{padding: 30px 0; font-size: 16px} .more h2{font-size: 40px; margin-bottom: 20px} .more h3{color:#f66e00;font-size: 25px; margin: 0; padding-top: 20px}
+
+footer {height: 155px; margin-top: 70px;}
+.footnav {width: 100%; margin: auto; height: 45px; border-top: 1px solid #b2b2b2; text-align: center; line-height: 45px; background: #f1f1f1;}
+.footnav ul li {display: inline; padding-right: 20px; }
+.footnav ul li a {color: #777;}
+.footnav ul li a:hover {color: #222;;}
+.footnav ul li:last-child {padding-right: none;}
+
+.addressbg {width: 100%; height: 110px; background: #eee;}
+.address {margin: auto; width: 1000px; height: 100%; display: flex; justify-content: space-between; align-items: center;}
+.cjlogo {width: 175px;}
+.cjlogo img {width: 100%;}
+.company {width: 800px; font-size: 0.9em;}
+</style>
+<script>
+$(function(){
+    $('.lev1 > a').on("mouseenter",function(){
+        $('.headerwrap').removeClass('over').addClass('over');
+        $(".lev2").hide();
+		$(this).next().show();
+    });
+    $(".headerwrap").on("mouseleave", function() {
+        $(".headerwrap").removeClass("over");
+        $(".lev2").hide();
+    });
+    
+    $('.level1').mouseenter(function(){
+        $(".level2").hide();
+        $(this).find('.level2').show()
+        $('.level1').removeClass('on')
+        $(this).addClass('on')
+    })
+    $('.level2 li').click(function(){
+        $('.level2 li').removeClass('on')
+        $(this).addClass('on')
+        var idx = $(this).index();
+        // $('.menu1 li').fadeOut();
+        // $(this).closest('.menu').siblings().find('li').eq(idx).fadeIn();
+    })
+
+    tabView1('.menu1')
+    tabView2('.menu2')
+    tabView3('.menu3')
+    tabView4('.menu4')
+
+
+    function tabView1(tabName){
+        $('.sub1 li').click(function(){
+                var idx = $(this).index();
+                $('.view').hide();
+                $(tabName).css({'z-index':'20'})
+                $(tabName +' .view').hide();
+                $(tabName+ ' .view').eq(idx).show();
+         });
+    }
+    function tabView2(tabName){
+        $('.sub2 li').click(function(){
+                var idx = $(this).index();
+                $('.view').hide();
+                $(tabName).css({'z-index':'20'})
+                $(tabName +' .view').hide();
+                $(tabName+ ' .view').eq(idx).show();
+         });
+    }
+    function tabView3(tabName){
+        $('.sub3 li').click(function(){
+                var idx = $(this).index();
+                console.log(idx)
+                $('.view').hide();
+                $(tabName).css({'z-index':'20'})
+                $(tabName +' .view').hide();
+                $(tabName+ ' .view').eq(idx).show();
+         });
+    }
+    function tabView4(tabName){
+        $('.sub4 li').click(function(){
+                var idx = $(this).index();
+                $('.view').hide();
+                $(tabName).css({'z-index':'20'})
+                $(tabName +' .view').hide();
+                $(tabName+ ' .view').eq(idx).show();
+         });
+    }
+
+    $('button').click(function(){
+        // $('.more').fadeOut();
+        $(this).closest('.right').next().fadeIn()
+    })
+    $('u').click(function(){
+        $('.more').fadeOut();
+    })
+    $('.more').mCustomScrollbar({theme:'minimal-dark'});
+})
+</script>
+<body>
+<div class="headerwrap">
+    <div class="header">
+        <h1 class="logo"><a href="../index.html"></a></h1>
+        <ul class="navi">
+            <li class="lev1"><a href="">현지에서 먹힐까?</a>
+                <ul class="lev2">
+                    <li><a href="#">프로그램소개</a></li>
+                    <li><a href="#">출연진소개</a></li>
+                </ul>
+            </li>
+            <li><a href="recipe.html">레시피</a></li>
+            <li class="lev1">
+                <a href="../vod.html">VOD</a>
+                <ul class="lev2">
+                    <li><a href="../vod.html">다시보기</a></li>
+                    <li><a href="../vod.html">클립영상</a></li>
+                    <li><a href="../vod.html">스페셜</a></li>
+                    <li><a href="../vod.html">예고</a></li>
+                </ul>
+            </li>
+            <li><a href="#">이벤트</a></li>
+            <li><a href="#">시청자게시판</a></li>
+        </ul>
+    </div>
+</div>
+<section class="se1">
+    <h1>레시피</h1>
+</section>
+<section class="se2">
+    <ul class="menu">
+        <li class="level1 on">면류
+            <ul class="level2 on sub1"> 
+                <li class="on"><a href="#">짜장면</a></li>
+                <li><a href="#">짬짜면</a></li>
+                <li><a href="#">차돌짬뽕</a></li>
+                <li><a href="#">볶음짬뽕</a></li>
+            </ul>
+        </li>
+        <li class="level1">식사류
+            <ul class="level2 sub2">
+                <li><a href="#">볶음밥</a></li>
+                <li><a href="#">해물덮밥</a></li>
+                <li><a href="#" class="e">마파두부<br>덮밥</a></li>
+                <li><a href="#">삼겹살덮밥</a></li>
+                <li><a href="#" class="e">깍두기<br>볶음밥</a></li>
+            </ul>
+        </li>
+        <li class="level1">퓨전
+            <ul class="level2 sub3">
+                <li><a href="#">떡갈비버거</a></li>
+                <li><a href="#">깐풍치킨</a></li>
+            </ul>
+        </li>
+        <li class="level1">튀김류
+            <ul class="level2 sub4">
+                <li><a href="#">멘보샤</a></li>
+                <li><a href="#">탕수육</a></li>
+                <li><a href="#">갈비만두</a></li>
+                <li><a href="#">크림새우</a></li>
+            </ul>
+        </li>
+    </ul>
+    <ul class="menu1 mlist">
+        <li class="on view">
+            <div class="left"><img src="img/음식/menu01-01.jpeg" alt=""></div>
+            <div class="right">
+                <h1>짜장면</h1>
+                <h3>&lt재료&gt</h3>
+                    <ul class="food">
+                        <li><img src="img/onion.png" alt=""><span>양파</span></li>
+                        <li><img src="img/tofu.png" alt=""><span>두부</span></li>
+                        <li><img src="img/soy-sauce.png" alt=""><span>간장</span></li>
+                        <li><img src="img/du.png" alt=""><span>황두장</span></li>
+                        <li><img src="img/sugar.png" alt=""><span>설탕</span></li>
+                        <li><img src="img/water.png" alt=""><span>물</span></li>
+                        <li><img src="img/cucumber.png" alt=""><span>오이</span></li>
+                        <li><img src="img/noodles (3).png" alt=""><span>삶은면</span></li>
+                    </ul>
+                <button>자세히보기</button>
+            </div>  
+            <div class="more">
+                <u></u>
+                <h3>tvN &lt현지에서 먹힐까? 미국편&gt 2회</h3>
+                <h2>짜장면</h2>
+                <img src="짜장면/1.jpg" alt="">
+                <p>1. 깊은 웍에 식용유 1 큰술을 넣고 달군 후, <br>
+                    미리 썰어둔 양파와 호박을 넣고 볶는다.</p>
+                <img src="짜장면/2.jpg" alt="">
+                <p>2. 튀긴 두부 한 움큼을 넣고, 
+                    <br>간장 1 큰술을 넣은 후,
+                    <br>간이 골고루 스며들도록 웍질을 해준다.</p>   
+                <img src="짜장면/3.jpg" alt="">
+                <img src="짜장면/4.jpg" alt="">
+                <p>3. 황두장 1큰술과 설탕 1큰술을 넣고,
+                    <br>춘장 반 국자를 넣어 볶아준다.</p>   
+                <img src="짜장면/5.jpg" alt="">
+                <img src="짜장면/6.jpg" alt="">
+                <p>4. 물을 3큰술 정도 넣고 볶는다.
+                    <br>고기 기름기가 없어 겉도는 소스들이
+                    <br>채소에 잘 스며들도록 수분을 보충해주는 것이라고 한다.</p>   
+                <img src="짜장면/7.jpg" alt="">
+            </div>
+        </li> <!--짬짜면-->
+        <li class="view">
+            <div class="left"><img src="img/음식/짬짜면.jpg" alt=""></div>
+            <div class="right">
+                <h1>짬짜면</h1>
+                <h3>&lt재료&gt</h3>
+                    <ul class="food">
+                        <li><img src="img/clove-garlic.png" alt=""><span>마늘</span></li>
+                        <li><img src="img/chili-pepper.png" alt=""><span>청양고추</span></li>
+                        <li><img src="img/pepper.png" alt=""><span>고춧가루</span></li>
+                        <li><img src="img/shrimp.png" alt=""><span>새우</span></li>
+                        <li><img src="img/onion.png" alt=""><span>양파</span></li>
+                        <li><img src="img/tofu.png" alt=""><span>두부</span></li>
+                        <li><img src="img/soy-sauce.png" alt=""><span>간장</span></li>
+                        <li><img src="img/du.png" alt=""><span>황두장</span></li>
+                        <li><img src="img/sugar.png" alt=""><span>설탕</span></li>
+                        <li><img src="img/water.png" alt=""><span>물</span></li>
+                        <li><img src="img/cucumber.png" alt=""><span>오이</span></li>
+                        <li><img src="img/noodles (3).png" alt=""><span>삶은면</span></li>
+                    </ul>
+                <button>자세히보기</button>
+            </div>
+            <div class="more">
+                <u></u>
+                <h3>tvN &lt현지에서 먹힐까? 미국편&gt 11회</h3>
+                <h2>짬짜면</h2>
+                <img src="짜장면/1.jpg" alt="">
+                <p>1. 깊은 웍에 식용유 1 큰술을 넣고 달군 후, <br>
+                    미리 썰어둔 양파와 호박을 넣고 볶는다.</p>
+                <img src="짜장면/2.jpg" alt="">
+                <p>2. 튀긴 두부 한 움큼을 넣고, 
+                    <br>간장 1 큰술을 넣은 후,
+                    <br>간이 골고루 스며들도록 웍질을 해준다.</p>   
+                <img src="짜장면/3.jpg" alt="">
+                <img src="짜장면/4.jpg" alt="">
+                <p>3. 황두장 1큰술과 설탕 1큰술을 넣고,
+                    <br>춘장 반 국자를 넣어 볶아준다.</p>   
+                <img src="짜장면/5.jpg" alt="">
+                <img src="짜장면/6.jpg" alt="">
+                <p>4. 물을 3큰술 정도 넣고 볶는다.
+                    <br>고기 기름기가 없어 겉도는 소스들이
+                    <br>채소에 잘 스며들도록 수분을 보충해주는 것이라고 한다.</p>   
+                <img src="짜장면/7.jpg" alt="">
+            </div>
+        </li> <!--짜장면-->
+        <li class="view">
+            <div class="left"><img src="img/음식/menu01-02.jpeg" alt="" style="height:580px"></div>
+            <div class="right">
+                <h1>차돌짬뽕</h1>
+                <h3>&lt재료&gt</h3>
+                    <ul class="food">
+                        <li><img src="img/clove-garlic.png" alt=""><span>마늘</span></li>
+                        <li><img src="img/chili-pepper.png" alt=""><span>청양고추</span></li>
+                        <li><img src="img/pepper.png" alt=""><span>고춧가루</span></li>
+                        <li><img src="img/shrimp.png" alt=""><span>새우</span></li>
+                        <li><img src="img/onion.png" alt=""><span>양파</span></li>
+                        <li><img src="img/spring-onion.png" alt=""><span>파</span></li>
+                        <li><img src="img/soy-sauce.png" alt=""><span>간장</span></li>
+                        <li><img src="img/squid.png" alt=""><span>오징어</span></li>
+                        <li><img src="img/sugar.png" alt=""><span>소금</span></li>
+                        <li><img src="img/mussel.png" alt=""><span>홍합</span></li>
+                        <li><img src="img/noodles (3).png" alt=""><span>삶은면</span></li>
+                    </ul>
+                <button>자세히보기</button>
+            </div>
+            <div class="more">
+                <u></u>
+                <h3>tvN &lt현지에서 먹힐까? 미국편&gt 3회</h3>
+                <h2>차돌짬뽕</h2>
+                <img src="차돌짬뽕/1.jpg" alt="">
+                <img src="차돌짬뽕/2.jpg" alt="">
+                <img src="차돌짬뽕/3.jpg" alt="">
+                <img src="차돌짬뽕/4.jpg" alt="">
+                <img src="차돌짬뽕/5.jpg" alt="">
+                <img src="차돌짬뽕/6.jpg" alt="">
+                <img src="차돌짬뽕/7.jpg" alt="">
+                <p>1. 채소준비<br>청경채를 반절만 잘라줍니다. <br>파는 넓게 썰고, 버섯과 양배추를 크게 썰어준다.<br>고추는 잘게 썰고 양파는 채썰기를 한다.<br>목이버섯은 물에 불린 후<br>물기를 제거하고 썰어준다</p>
+                <img src="차돌짬뽕/8.jpg" alt="">
+                <p>2. 웍에 식용유를 둘러 달군 후, <br>파와 마늘을 넣고 볶아 파마늘 기름을 낸다</p>
+                <img src="차돌짬뽕/9.jpg" alt="">
+                <img src="차돌짬뽕/10.jpg" alt="">
+                <p>3. 양파, 양배추, 청경채를 넣고<br>간장을 두바퀴 둘러준 후,<br>불맛을 입혀준다</p>
+                <img src="차돌짬뽕/11.jpg" alt="">
+                <p>4. 채소 숨이 죽으면 고춧가루를 넣고 볶은 후,<br>면수 네 국자를 넣고 끓인다</p>
+                <img src="차돌짬뽕/12.jpg" alt="">
+                <img src="차돌짬뽕/13.jpg" alt="">
+                <img src="차돌짬뽕/14.jpg" alt="">
+                <p>5. 한 소금 끓인 후 양송이버섯과 목이버섯,<br>새우와 오징어를 넣고 끓인다.<br>소금과 치킨스톡으로 간을 더하고,<br>굴 소스를 더한다</p>
+                <img src="차돌짬뽕/15.jpg" alt="">
+                <img src="차돌짬뽕/16.jpg" alt="">
+            </div>
+        </li> <!--차돌짬뽕-->
+        <li class="view">
+            <div class="left"><img src="img/음식/볶음짬뽕.jpg" alt=""></div>
+            <div class="right">
+                <h1>볶음짬뽕</h1>
+                <h3>&lt재료&gt</h3>
+                    <ul class="food">
+                        <li><img src="img/mushroom.png" alt=""><span>버섯</span></li>
+                        <li><img src="img/carrot.png" alt=""><span>당근</span></li>
+                        <li><img src="img/clove-garlic.png" alt=""><span>마늘</span></li>
+                        <li><img src="img/chili-pepper.png" alt=""><span>청양고추</span></li>
+                        <li><img src="img/pepper.png" alt=""><span>고춧가루</span></li>
+                        <li><img src="img/shrimp.png" alt=""><span>새우</span></li>
+                        <li><img src="img/onion.png" alt=""><span>양파</span></li>
+                        <li><img src="img/spring-onion.png" alt=""><span>파</span></li>
+                        <li><img src="img/soy-sauce.png" alt=""><span>간장</span></li>
+                        <li><img src="img/squid.png" alt=""><span>오징어</span></li>
+                        <li><img src="img/sugar.png" alt=""><span>소금</span></li>
+                        <li><img src="img/mussel.png" alt=""><span>홍합</span></li>
+                        <li><img src="img/noodles (3).png" alt=""><span>삶은면</span></li>
+                    </ul>
+                <button>자세히보기</button>
+            </div>
+            <div class="more">
+                <u></u>
+                <h3>tvN &lt현지에서 먹힐까? 미국편&gt 6회</h3>
+                <h2>볶음짬뽕</h2>
+                <img src="볶음짬뽕/1.jpg" alt="">
+                <p>1. 볶음짬뽕에 들어갈 야채는 미리 썰어 준비해둡니다.</p>
+                <img src="볶음짬뽕/2.jpg" alt="">
+                <p>2. 웍(프라이팬)에 기름을 두르고 달군 후,<br>
+                야채를 모두 넣은 후, 간장넣고 볶아주세요.</p>
+                <img src="볶음짬뽕/3.jpg" alt="">
+                <img src="볶음짬뽕/4.jpg" alt="">
+                <p>3. 고춧가루를 넣고<br>목이버섯을 넣고 더 볶아줍니다.</p>
+                <img src="볶음짬뽕/5.jpg" alt="">
+                <p>4. 잘 볶아지지 않는다면 짬뽕 면을 삶는<br>면수를 5~8큰술 정도 넣어줍니다.</p>
+                <img src="볶음짬뽕/6.jpg" alt="">
+                <img src="볶음짬뽕/7.jpg" alt="">
+                <p>5. 소고기를 넣고,<br>해산물을 넣어 볶습니다.</p>
+                <img src="볶음짬뽕/8.jpg" alt="">
+                <p>6. 재료들이 양념과 잘 섞이며 익도록 웍질을 해줍니다.</p>
+                <img src="볶음짬뽕/8.jpg" alt="">
+                <p>7. 해산물이 다 익으면 면을 넣고<br>빠르게 볶아냅니다.</p>
+                <img src="볶음짬뽕/9.jpg" alt="">
+            </div>
+        </li> <!--볶음짬뽕-->
+    </ul>
+    <ul class="menu2 mlist"><!--식사-->
+        <li class="view">
+            <div class="left"><img src="img/음식/짜장밥.jpg" alt=""></div>
+            <div class="right">
+                <h1>볶음밥</h1>
+                <h3>&lt재료&gt</h3>
+                    <ul class="food">
+                        <li><img src="img/knife.png" alt=""><span>소고기</span></li>
+                        <li><img src="img/clove-garlic.png" alt=""><span>마늘</span></li>
+                        <li><img src="img/onion.png" alt=""><span>양파</span></li>
+                        <li><img src="img/mushroom.png" alt=""><span>버섯</span></li>
+                        <li><img src="img/soy-sauce.png" alt=""><span>간장</span></li>
+                        <li><img src="img/spring-onion.png" alt=""><span>파</span></li>
+                        <li><img src="img/flour.png" alt=""><span>전분</span></li>
+                        <li><img src="img/cucumber.png" alt=""><span>오이</span></li>
+                        <li><img src="img/lettuce.png" alt=""><span>양상추</span></li>
+                        <li><img src="img/mayonnaise.png" alt=""><span>마요네즈</span></li>
+                        <li><img src="img/jalapeno.png" alt=""><span>할라피뇨</span></li>
+                    </ul>
+                <button>자세히보기</button>
+            </div>
+            <div class="more">
+                <u></u>
+                <h3>tvN &lt현지에서 먹힐까? 미국편&gt 2회</h3>
+                <h2>볶음밥</h2>
+                <img src="새우볶음밥/1.jpg" alt="">
+                <p>1. 웍에 식용유를 넣고 달군 후,<br>풀어둔 달걀을 넣고 튀긴다.</p>
+                <img src="새우볶음밥/2.jpg" alt="">
+                <p>2. 식은 밥을 넣어 국자로 눌러 부순다.</p>
+                <img src="새우볶음밥/3.jpg" alt="">
+                <img src="새우볶음밥/4.jpg" alt="">
+                <p>3. 파와 당근, 양파를 넣어 볶다가,<br>칵테일 새우와 문어, 완두콩, 소금을 넣어 볶는다.</p>
+                <img src="새우볶음밥/6.jpg" alt="">
+                <p>4. 그릇에 볶음밥을 담고, 짜장소스와 반속한 달걀 프라이를 얹는다.<br></p>
+                <img src="새우볶음밥/7.jpg" alt="">
+                <p>5. 소고기를 넣고,<br>해산물을 넣어 볶습니다.</p>
+                <img src="새우볶음밥/8.jpg" alt="">
+                <img src="새우볶음밥/9.jpg" alt="">
+                <img src="새우볶음밥/10.jpg" alt="">
+            </div>
+        </li>
+        <li class="view">
+            <div class="left"><img src="img/음식/해물덮밥.jpg" alt=""></div>
+            <div class="right">
+                <h1>해물덮밥</h1>
+                <h3>&lt재료&gt</h3>
+                    <ul class="food">
+                        <li><img src="img/flour.png" alt=""><span>전분</span></li>
+                        <li><img src="img/clove-garlic.png" alt=""><span>마늘</span></li>
+                        <li><img src="img/chili-pepper.png" alt=""><span>청양고추</span></li>
+                        <li><img src="img/eggs.png" alt=""><span>계란</span></li>
+                        <li><img src="img/spring-onion.png" alt=""><span>파</span></li>
+                        <li><img src="img/carrot.png" alt=""><span>당근</span></li>
+                        <li><img src="img/soy-sauce.png" alt=""><span>간장</span></li>
+                        <li><img src="img/chicken.png" alt=""><span>닭다리</span></li>
+                        <li><img src="img/sugar.png" alt=""><span>설탕</span></li>
+                        <li><img src="img/water.png" alt=""><span>물</span></li>
+                    </ul>
+                <button>자세히보기</button>
+            </div>
+            <div class="more">
+                <u></u>
+                <h3>tvN &lt현지에서 먹힐까? 미국편&gt 9회</h3>
+                <h2>해물덮밥</h2>
+                <img src="해물덮밥/img (1).png" alt="">
+                <img src="해물덮밥/img (1).png" alt="">
+                <p>1. 웍에 기름 코딩을 해주고 파, 마늘을 볶는다.</p>
+                <img src="해물덮밥/img (1).png" alt="">
+                <p>2. 웍(프라이팬)에 기름을 두르고 달군 후,<br>
+                야채를 모두 넣은 후, 간장넣고 볶아주세요.</p>
+                <img src="해물덮밥/img (1).png" alt="">
+                <img src="해물덮밥/img (1).png" alt="">
+                <p>3. 고춧가루를 넣고<br>목이버섯을 넣고 더 볶아줍니다.</p>
+                <img src="해물덮밥/img (1).png" alt="">
+                <p>4. 잘 볶아지지 않는다면 짬뽕 면을 삶는<br>면수를 5~8큰술 정도 넣어줍니다.</p>
+                <img src="해물덮밥/img (1).png" alt="">
+                <img src="해물덮밥/img (1).png" alt="">
+                <p>5. 소고기를 넣고,<br>해산물을 넣어 볶습니다.</p>
+                <img src="해물덮밥/img (1).png" alt="">
+                <p>6. 재료들이 양념과 잘 섞이며 익도록 웍질을 해줍니다.</p>
+                <img src="해물덮밥/img (1).png" alt="">
+                <p>7. 해산물이 다 익으면 면을 넣고<br>빠르게 볶아냅니다.</p>
+                <img src="해물덮밥/img (1).png" alt="">
+            </div>
+        </li>
+        <li class="view">
+            <div class="left"><img src="img/음식/마파두부.jpg" alt=""></div>
+            <div class="right">
+                <h1>마파두부덮밥</h1>
+                <h3>&lt재료&gt</h3>
+                    <ul class="food">
+                        <li><img src="img/flour.png" alt=""><span>전분</span></li>
+                        <li><img src="img/clove-garlic.png" alt=""><span>마늘</span></li>
+                        <li><img src="img/chili-pepper.png" alt=""><span>청양고추</span></li>
+                        <li><img src="img/eggs.png" alt=""><span>계란</span></li>
+                        <li><img src="img/spring-onion.png" alt=""><span>파</span></li>
+                        <li><img src="img/carrot.png" alt=""><span>당근</span></li>
+                        <li><img src="img/soy-sauce.png" alt=""><span>간장</span></li>
+                        <li><img src="img/chicken.png" alt=""><span>닭다리</span></li>
+                        <li><img src="img/sugar.png" alt=""><span>설탕</span></li>
+                        <li><img src="img/water.png" alt=""><span>물</span></li>
+                    </ul>
+                <button>자세히보기</button>
+            </div>
+            <div class="more">
+                <u></u>
+                <h3>tvN &lt현지에서 먹힐까? 미국편&gt 6회</h3>
+                <h2>볶음짬뽕</h2>
+                <img src="볶음짬뽕/1.jpg" alt="">
+                <p>1. 볶음짬뽕에 들어갈 야채는 미리 썰어 준비해둡니다.</p>
+                <img src="볶음짬뽕/2.jpg" alt="">
+                <p>2. 웍(프라이팬)에 기름을 두르고 달군 후,<br>
+                야채를 모두 넣은 후, 간장넣고 볶아주세요.</p>
+                <img src="볶음짬뽕/3.jpg" alt="">
+                <img src="볶음짬뽕/4.jpg" alt="">
+                <p>3. 고춧가루를 넣고<br>목이버섯을 넣고 더 볶아줍니다.</p>
+                <img src="볶음짬뽕/5.jpg" alt="">
+                <p>4. 잘 볶아지지 않는다면 짬뽕 면을 삶는<br>면수를 5~8큰술 정도 넣어줍니다.</p>
+                <img src="볶음짬뽕/6.jpg" alt="">
+                <img src="볶음짬뽕/7.jpg" alt="">
+                <p>5. 소고기를 넣고,<br>해산물을 넣어 볶습니다.</p>
+                <img src="볶음짬뽕/8.jpg" alt="">
+                <p>6. 재료들이 양념과 잘 섞이며 익도록 웍질을 해줍니다.</p>
+                <img src="볶음짬뽕/8.jpg" alt="">
+                <p>7. 해산물이 다 익으면 면을 넣고<br>빠르게 볶아냅니다.</p>
+                <img src="볶음짬뽕/9.jpg" alt="">
+            </div>
+        </li>
+        <li class="view">
+            <div class="left"><img src="img/음식/삼겹살덮밥.jpg" alt=""></div>
+            <div class="right">
+                <h1>삼겹살덮밥</h1>
+                <h3>&lt재료&gt</h3>
+                    <ul class="food">
+                        <li><img src="img/flour.png" alt=""><span>전분</span></li>
+                        <li><img src="img/clove-garlic.png" alt=""><span>마늘</span></li>
+                        <li><img src="img/chili-pepper.png" alt=""><span>청양고추</span></li>
+                        <li><img src="img/eggs.png" alt=""><span>계란</span></li>
+                        <li><img src="img/spring-onion.png" alt=""><span>파</span></li>
+                        <li><img src="img/carrot.png" alt=""><span>당근</span></li>
+                        <li><img src="img/soy-sauce.png" alt=""><span>간장</span></li>
+                        <li><img src="img/chicken.png" alt=""><span>닭다리</span></li>
+                        <li><img src="img/sugar.png" alt=""><span>설탕</span></li>
+                        <li><img src="img/water.png" alt=""><span>물</span></li>
+                    </ul>
+                <button>자세히보기</button>
+            </div>
+            <div class="more">
+                <u></u>
+                <h3>tvN &lt현지에서 먹힐까? 미국편&gt 6회</h3>
+                <h2>볶음짬뽕</h2>
+                <img src="볶음짬뽕/1.jpg" alt="">
+                <p>1. 볶음짬뽕에 들어갈 야채는 미리 썰어 준비해둡니다.</p>
+                <img src="볶음짬뽕/2.jpg" alt="">
+                <p>2. 웍(프라이팬)에 기름을 두르고 달군 후,<br>
+                야채를 모두 넣은 후, 간장넣고 볶아주세요.</p>
+                <img src="볶음짬뽕/3.jpg" alt="">
+                <img src="볶음짬뽕/4.jpg" alt="">
+                <p>3. 고춧가루를 넣고<br>목이버섯을 넣고 더 볶아줍니다.</p>
+                <img src="볶음짬뽕/5.jpg" alt="">
+                <p>4. 잘 볶아지지 않는다면 짬뽕 면을 삶는<br>면수를 5~8큰술 정도 넣어줍니다.</p>
+                <img src="볶음짬뽕/6.jpg" alt="">
+                <img src="볶음짬뽕/7.jpg" alt="">
+                <p>5. 소고기를 넣고,<br>해산물을 넣어 볶습니다.</p>
+                <img src="볶음짬뽕/8.jpg" alt="">
+                <p>6. 재료들이 양념과 잘 섞이며 익도록 웍질을 해줍니다.</p>
+                <img src="볶음짬뽕/8.jpg" alt="">
+                <p>7. 해산물이 다 익으면 면을 넣고<br>빠르게 볶아냅니다.</p>
+                <img src="볶음짬뽕/9.jpg" alt="">
+            </div>
+        </li>
+        <li class="view">
+            <div class="left"><img src="img/음식/깍두기볶음밥.jpg" alt="" style="height: 600px"></div>
+            <div class="right">
+                <h1>깍두기볶음밥</h1>
+                <h3>&lt재료&gt</h3>
+                    <ul class="food">
+                        <li><img src="img/flour.png" alt=""><span>전분</span></li>
+                        <li><img src="img/clove-garlic.png" alt=""><span>마늘</span></li>
+                        <li><img src="img/chili-pepper.png" alt=""><span>청양고추</span></li>
+                        <li><img src="img/eggs.png" alt=""><span>계란</span></li>
+                        <li><img src="img/spring-onion.png" alt=""><span>파</span></li>
+                        <li><img src="img/carrot.png" alt=""><span>당근</span></li>
+                        <li><img src="img/soy-sauce.png" alt=""><span>간장</span></li>
+                        <li><img src="img/chicken.png" alt=""><span>닭다리</span></li>
+                        <li><img src="img/sugar.png" alt=""><span>설탕</span></li>
+                        <li><img src="img/water.png" alt=""><span>물</span></li>
+                    </ul>
+                <button>자세히보기</button>
+            </div>
+            <div class="more">
+                <u></u>
+                <h3>tvN &lt현지에서 먹힐까? 미국편&gt 6회</h3>
+                <h2>볶음짬뽕</h2>
+                <img src="볶음짬뽕/1.jpg" alt="">
+                <p>1. 볶음짬뽕에 들어갈 야채는 미리 썰어 준비해둡니다.</p>
+                <img src="볶음짬뽕/2.jpg" alt="">
+                <p>2. 웍(프라이팬)에 기름을 두르고 달군 후,<br>
+                야채를 모두 넣은 후, 간장넣고 볶아주세요.</p>
+                <img src="볶음짬뽕/3.jpg" alt="">
+                <img src="볶음짬뽕/4.jpg" alt="">
+                <p>3. 고춧가루를 넣고<br>목이버섯을 넣고 더 볶아줍니다.</p>
+                <img src="볶음짬뽕/5.jpg" alt="">
+                <p>4. 잘 볶아지지 않는다면 짬뽕 면을 삶는<br>면수를 5~8큰술 정도 넣어줍니다.</p>
+                <img src="볶음짬뽕/6.jpg" alt="">
+                <img src="볶음짬뽕/7.jpg" alt="">
+                <p>5. 소고기를 넣고,<br>해산물을 넣어 볶습니다.</p>
+                <img src="볶음짬뽕/8.jpg" alt="">
+                <p>6. 재료들이 양념과 잘 섞이며 익도록 웍질을 해줍니다.</p>
+                <img src="볶음짬뽕/8.jpg" alt="">
+                <p>7. 해산물이 다 익으면 면을 넣고<br>빠르게 볶아냅니다.</p>
+                <img src="볶음짬뽕/9.jpg" alt="">
+            </div>
+        </li>
+    </ul>
+    <ul class="menu3 mlist"><!--퓨전-->
+        <li class="view">
+            <div class="left"><img src="img/음식/떡갈비버거.jpg" alt=""></div>
+            <div class="right">
+                <h1>떡갈비버거</h1>
+                <h3>&lt재료&gt</h3>
+                    <ul class="food">
+                        <li><img src="img/knife.png" alt=""><span>소고기</span></li>
+                        <li><img src="img/clove-garlic.png" alt=""><span>마늘</span></li>
+                        <li><img src="img/onion.png" alt=""><span>양파</span></li>
+                        <li><img src="img/mushroom.png" alt=""><span>버섯</span></li>
+                        <li><img src="img/soy-sauce.png" alt=""><span>간장</span></li>
+                        <li><img src="img/spring-onion.png" alt=""><span>파</span></li>
+                        <li><img src="img/flour.png" alt=""><span>전분</span></li>
+                        <li><img src="img/cucumber.png" alt=""><span>오이</span></li>
+                        <li><img src="img/lettuce.png" alt=""><span>양상추</span></li>
+                        <li><img src="img/mayonnaise.png" alt=""><span>마요네즈</span></li>
+                        <li><img src="img/jalapeno.png" alt=""><span>할라피뇨</span></li>
+                    </ul>
+                <button>자세히보기</button>
+            </div>
+            <div class="more">
+                <u></u>
+                <h3>tvN &lt현지에서 먹힐까? 미국편&gt 6회</h3>
+                <h2>볶음짬뽕</h2>
+                <img src="볶음짬뽕/1.jpg" alt="">
+                <p>1. 볶음짬뽕에 들어갈 야채는 미리 썰어 준비해둡니다.</p>
+                <img src="볶음짬뽕/2.jpg" alt="">
+                <p>2. 웍(프라이팬)에 기름을 두르고 달군 후,<br>
+                야채를 모두 넣은 후, 간장넣고 볶아주세요.</p>
+                <img src="볶음짬뽕/3.jpg" alt="">
+                <img src="볶음짬뽕/4.jpg" alt="">
+                <p>3. 고춧가루를 넣고<br>목이버섯을 넣고 더 볶아줍니다.</p>
+                <img src="볶음짬뽕/5.jpg" alt="">
+                <p>4. 잘 볶아지지 않는다면 짬뽕 면을 삶는<br>면수를 5~8큰술 정도 넣어줍니다.</p>
+                <img src="볶음짬뽕/6.jpg" alt="">
+                <img src="볶음짬뽕/7.jpg" alt="">
+                <p>5. 소고기를 넣고,<br>해산물을 넣어 볶습니다.</p>
+                <img src="볶음짬뽕/8.jpg" alt="">
+                <p>6. 재료들이 양념과 잘 섞이며 익도록 웍질을 해줍니다.</p>
+                <img src="볶음짬뽕/8.jpg" alt="">
+                <p>7. 해산물이 다 익으면 면을 넣고<br>빠르게 볶아냅니다.</p>
+                <img src="볶음짬뽕/9.jpg" alt="">
+            </div>
+        </li> <!--짬짜면-->
+        <li class="view">
+            <div class="left"><img src="img/음식/깐풍치킨.jpg" alt=""></div>
+            <div class="right">
+                <h1>깐풍치킨</h1>
+                <h3>&lt재료&gt</h3>
+                    <ul class="food">
+                        <li><img src="img/flour.png" alt=""><span>전분</span></li>
+                        <li><img src="img/clove-garlic.png" alt=""><span>마늘</span></li>
+                        <li><img src="img/chili-pepper.png" alt=""><span>청양고추</span></li>
+                        <li><img src="img/eggs.png" alt=""><span>계란</span></li>
+                        <li><img src="img/spring-onion.png" alt=""><span>파</span></li>
+                        <li><img src="img/carrot.png" alt=""><span>당근</span></li>
+                        <li><img src="img/soy-sauce.png" alt=""><span>간장</span></li>
+                        <li><img src="img/chicken.png" alt=""><span>닭다리</span></li>
+                        <li><img src="img/sugar.png" alt=""><span>설탕</span></li>
+                        <li><img src="img/water.png" alt=""><span>물</span></li>
+                    </ul>
+                <button>자세히보기</button>
+            </div>
+            <div class="more">
+                <u></u>
+                <h3>tvN &lt현지에서 먹힐까? 미국편&gt 6회</h3>
+                <h2>볶음짬뽕</h2>
+                <img src="볶음짬뽕/1.jpg" alt="">
+                <p>1. 볶음짬뽕에 들어갈 야채는 미리 썰어 준비해둡니다.</p>
+                <img src="볶음짬뽕/2.jpg" alt="">
+                <p>2. 웍(프라이팬)에 기름을 두르고 달군 후,<br>
+                야채를 모두 넣은 후, 간장넣고 볶아주세요.</p>
+                <img src="볶음짬뽕/3.jpg" alt="">
+                <img src="볶음짬뽕/4.jpg" alt="">
+                <p>3. 고춧가루를 넣고<br>목이버섯을 넣고 더 볶아줍니다.</p>
+                <img src="볶음짬뽕/5.jpg" alt="">
+                <p>4. 잘 볶아지지 않는다면 짬뽕 면을 삶는<br>면수를 5~8큰술 정도 넣어줍니다.</p>
+                <img src="볶음짬뽕/6.jpg" alt="">
+                <img src="볶음짬뽕/7.jpg" alt="">
+                <p>5. 소고기를 넣고,<br>해산물을 넣어 볶습니다.</p>
+                <img src="볶음짬뽕/8.jpg" alt="">
+                <p>6. 재료들이 양념과 잘 섞이며 익도록 웍질을 해줍니다.</p>
+                <img src="볶음짬뽕/8.jpg" alt="">
+                <p>7. 해산물이 다 익으면 면을 넣고<br>빠르게 볶아냅니다.</p>
+                <img src="볶음짬뽕/9.jpg" alt="">
+            </div>
+        </li> <!--짜장면-->
+    </ul>
+    <ul class="menu4 mlist"><!--식사-->
+        <li class="view">
+            <div class="left"><img src="img/음식/멘보샤.jpg" alt="" style="width: 100%"></div>
+            <div class="right">
+                <h1>멘보샤</h1>
+                <h3>&lt재료&gt</h3>
+                    <ul class="food">
+                        <li><img src="img/knife.png" alt=""><span>소고기</span></li>
+                        <li><img src="img/clove-garlic.png" alt=""><span>마늘</span></li>
+                        <li><img src="img/onion.png" alt=""><span>양파</span></li>
+                        <li><img src="img/mushroom.png" alt=""><span>버섯</span></li>
+                        <li><img src="img/soy-sauce.png" alt=""><span>간장</span></li>
+                        <li><img src="img/spring-onion.png" alt=""><span>파</span></li>
+                        <li><img src="img/flour.png" alt=""><span>전분</span></li>
+                        <li><img src="img/cucumber.png" alt=""><span>오이</span></li>
+                        <li><img src="img/lettuce.png" alt=""><span>양상추</span></li>
+                        <li><img src="img/mayonnaise.png" alt=""><span>마요네즈</span></li>
+                        <li><img src="img/jalapeno.png" alt=""><span>할라피뇨</span></li>
+                    </ul>
+                <button>자세히보기</button>
+            </div>
+            <div class="more">
+                <u></u>
+                <h3>tvN &lt현지에서 먹힐까? 미국편&gt 6회</h3>
+                <h2>볶음짬뽕</h2>
+                <img src="볶음짬뽕/1.jpg" alt="">
+                <p>1. 볶음짬뽕에 들어갈 야채는 미리 썰어 준비해둡니다.</p>
+                <img src="볶음짬뽕/2.jpg" alt="">
+                <p>2. 웍(프라이팬)에 기름을 두르고 달군 후,<br>
+                야채를 모두 넣은 후, 간장넣고 볶아주세요.</p>
+                <img src="볶음짬뽕/3.jpg" alt="">
+                <img src="볶음짬뽕/4.jpg" alt="">
+                <p>3. 고춧가루를 넣고<br>목이버섯을 넣고 더 볶아줍니다.</p>
+                <img src="볶음짬뽕/5.jpg" alt="">
+                <p>4. 잘 볶아지지 않는다면 짬뽕 면을 삶는<br>면수를 5~8큰술 정도 넣어줍니다.</p>
+                <img src="볶음짬뽕/6.jpg" alt="">
+                <img src="볶음짬뽕/7.jpg" alt="">
+                <p>5. 소고기를 넣고,<br>해산물을 넣어 볶습니다.</p>
+                <img src="볶음짬뽕/8.jpg" alt="">
+                <p>6. 재료들이 양념과 잘 섞이며 익도록 웍질을 해줍니다.</p>
+                <img src="볶음짬뽕/8.jpg" alt="">
+                <p>7. 해산물이 다 익으면 면을 넣고<br>빠르게 볶아냅니다.</p>
+                <img src="볶음짬뽕/9.jpg" alt="">
+            </div>
+        </li>
+        <li class="view">
+            <div class="left"><img src="img/음식/탕수육.jpg" alt="" style="width: 100%;"></div>
+            <div class="right">
+                <h1>탕수육</h1>
+                <h3>&lt재료&gt</h3>
+                    <ul class="food">
+                        <li><img src="img/flour.png" alt=""><span>전분</span></li>
+                        <li><img src="img/clove-garlic.png" alt=""><span>마늘</span></li>
+                        <li><img src="img/chili-pepper.png" alt=""><span>청양고추</span></li>
+                        <li><img src="img/eggs.png" alt=""><span>계란</span></li>
+                        <li><img src="img/spring-onion.png" alt=""><span>파</span></li>
+                        <li><img src="img/carrot.png" alt=""><span>당근</span></li>
+                        <li><img src="img/soy-sauce.png" alt=""><span>간장</span></li>
+                        <li><img src="img/chicken.png" alt=""><span>닭다리</span></li>
+                        <li><img src="img/sugar.png" alt=""><span>설탕</span></li>
+                        <li><img src="img/water.png" alt=""><span>물</span></li>
+                    </ul>
+                <button>자세히보기</button>
+            </div>
+            <div class="more">
+                <u></u>
+                <h3>tvN &lt현지에서 먹힐까? 미국편&gt 6회</h3>
+                <h2>볶음짬뽕</h2>
+                <img src="볶음짬뽕/1.jpg" alt="">
+                <p>1. 볶음짬뽕에 들어갈 야채는 미리 썰어 준비해둡니다.</p>
+                <img src="볶음짬뽕/2.jpg" alt="">
+                <p>2. 웍(프라이팬)에 기름을 두르고 달군 후,<br>
+                야채를 모두 넣은 후, 간장넣고 볶아주세요.</p>
+                <img src="볶음짬뽕/3.jpg" alt="">
+                <img src="볶음짬뽕/4.jpg" alt="">
+                <p>3. 고춧가루를 넣고<br>목이버섯을 넣고 더 볶아줍니다.</p>
+                <img src="볶음짬뽕/5.jpg" alt="">
+                <p>4. 잘 볶아지지 않는다면 짬뽕 면을 삶는<br>면수를 5~8큰술 정도 넣어줍니다.</p>
+                <img src="볶음짬뽕/6.jpg" alt="">
+                <img src="볶음짬뽕/7.jpg" alt="">
+                <p>5. 소고기를 넣고,<br>해산물을 넣어 볶습니다.</p>
+                <img src="볶음짬뽕/8.jpg" alt="">
+                <p>6. 재료들이 양념과 잘 섞이며 익도록 웍질을 해줍니다.</p>
+                <img src="볶음짬뽕/8.jpg" alt="">
+                <p>7. 해산물이 다 익으면 면을 넣고<br>빠르게 볶아냅니다.</p>
+                <img src="볶음짬뽕/9.jpg" alt="">
+            </div>
+        </li>
+        <li class="view">
+            <div class="left"><img src="img/음식/갈비만두.jpg" alt="" style="width:130%"></div>
+            <div class="right">
+                <h1>갈비만두</h1>
+                <h3>&lt재료&gt</h3>
+                    <ul class="food">
+                        <li><img src="img/flour.png" alt=""><span>전분</span></li>
+                        <li><img src="img/clove-garlic.png" alt=""><span>마늘</span></li>
+                        <li><img src="img/chili-pepper.png" alt=""><span>청양고추</span></li>
+                        <li><img src="img/eggs.png" alt=""><span>계란</span></li>
+                        <li><img src="img/spring-onion.png" alt=""><span>파</span></li>
+                        <li><img src="img/carrot.png" alt=""><span>당근</span></li>
+                        <li><img src="img/soy-sauce.png" alt=""><span>간장</span></li>
+                        <li><img src="img/chicken.png" alt=""><span>닭다리</span></li>
+                        <li><img src="img/sugar.png" alt=""><span>설탕</span></li>
+                        <li><img src="img/water.png" alt=""><span>물</span></li>
+                    </ul>
+                <button>자세히보기</button>
+            </div>
+            <div class="more">
+                <u></u>
+                <h3>tvN &lt현지에서 먹힐까? 미국편&gt 6회</h3>
+                <h2>볶음짬뽕</h2>
+                <img src="볶음짬뽕/1.jpg" alt="">
+                <p>1. 볶음짬뽕에 들어갈 야채는 미리 썰어 준비해둡니다.</p>
+                <img src="볶음짬뽕/2.jpg" alt="">
+                <p>2. 웍(프라이팬)에 기름을 두르고 달군 후,<br>
+                야채를 모두 넣은 후, 간장넣고 볶아주세요.</p>
+                <img src="볶음짬뽕/3.jpg" alt="">
+                <img src="볶음짬뽕/4.jpg" alt="">
+                <p>3. 고춧가루를 넣고<br>목이버섯을 넣고 더 볶아줍니다.</p>
+                <img src="볶음짬뽕/5.jpg" alt="">
+                <p>4. 잘 볶아지지 않는다면 짬뽕 면을 삶는<br>면수를 5~8큰술 정도 넣어줍니다.</p>
+                <img src="볶음짬뽕/6.jpg" alt="">
+                <img src="볶음짬뽕/7.jpg" alt="">
+                <p>5. 소고기를 넣고,<br>해산물을 넣어 볶습니다.</p>
+                <img src="볶음짬뽕/8.jpg" alt="">
+                <p>6. 재료들이 양념과 잘 섞이며 익도록 웍질을 해줍니다.</p>
+                <img src="볶음짬뽕/8.jpg" alt="">
+                <p>7. 해산물이 다 익으면 면을 넣고<br>빠르게 볶아냅니다.</p>
+                <img src="볶음짬뽕/9.jpg" alt="">
+            </div>
+        </li>
+        <li class="view">
+            <div class="left"><img src="img/음식/크림새우.jpg" alt="" style="width:120%"></div>
+            <div class="right">
+                <h1>크림새우</h1>
+                <h3>&lt재료&gt</h3>
+                    <ul class="food">
+                        <li><img src="img/flour.png" alt=""><span>전분</span></li>
+                        <li><img src="img/clove-garlic.png" alt=""><span>마늘</span></li>
+                        <li><img src="img/chili-pepper.png" alt=""><span>청양고추</span></li>
+                        <li><img src="img/eggs.png" alt=""><span>계란</span></li>
+                        <li><img src="img/spring-onion.png" alt=""><span>파</span></li>
+                        <li><img src="img/carrot.png" alt=""><span>당근</span></li>
+                        <li><img src="img/soy-sauce.png" alt=""><span>간장</span></li>
+                        <li><img src="img/chicken.png" alt=""><span>닭다리</span></li>
+                        <li><img src="img/sugar.png" alt=""><span>설탕</span></li>
+                        <li><img src="img/water.png" alt=""><span>물</span></li>
+                    </ul>
+                <button>자세히보기</button>
+            </div>
+            <div class="more">
+                <u></u>
+                <h3>tvN &lt현지에서 먹힐까? 미국편&gt 6회</h3>
+                <h2>볶음짬뽕</h2>
+                <img src="볶음짬뽕/1.jpg" alt="">
+                <p>1. 볶음짬뽕에 들어갈 야채는 미리 썰어 준비해둡니다.</p>
+                <img src="볶음짬뽕/2.jpg" alt="">
+                <p>2. 웍(프라이팬)에 기름을 두르고 달군 후,<br>
+                야채를 모두 넣은 후, 간장넣고 볶아주세요.</p>
+                <img src="볶음짬뽕/3.jpg" alt="">
+                <img src="볶음짬뽕/4.jpg" alt="">
+                <p>3. 고춧가루를 넣고<br>목이버섯을 넣고 더 볶아줍니다.</p>
+                <img src="볶음짬뽕/5.jpg" alt="">
+                <p>4. 잘 볶아지지 않는다면 짬뽕 면을 삶는<br>면수를 5~8큰술 정도 넣어줍니다.</p>
+                <img src="볶음짬뽕/6.jpg" alt="">
+                <img src="볶음짬뽕/7.jpg" alt="">
+                <p>5. 소고기를 넣고,<br>해산물을 넣어 볶습니다.</p>
+                <img src="볶음짬뽕/8.jpg" alt="">
+                <p>6. 재료들이 양념과 잘 섞이며 익도록 웍질을 해줍니다.</p>
+                <img src="볶음짬뽕/8.jpg" alt="">
+                <p>7. 해산물이 다 익으면 면을 넣고<br>빠르게 볶아냅니다.</p>
+                <img src="볶음짬뽕/9.jpg" alt="">
+            </div>
+        </li>
+    </ul>
+</section>
+<footer>
+<div class="footnav">
+    <ul>
+        <li><a href="#">회사소개</a></li>
+        <li><a href="#">광고/제휴문의</a></li>
+        <li><a href="#">이용약관</a></li>
+        <li><a href="#">개인정보처리방침</a></li>
+        <li><a href="#">청소년보호정책</a></li>
+        <li><a href="#">법적고지</a></li>
+        <li><a href="#">이메일무단수집거부</a></li>
+        <li><a href="#">큐톤표</a></li>
+        <li><a href="#">고객센터</a></li>
+    </ul>
+</div>
+<div class="addressbg">
+    <div class="address">
+        <div class="cjlogo">
+            <img src="webimg/cjenm.png" alt="">
+        </div>
+        <p class="company">
+            대표이사 : 허민회, 허민호 | 사업자정보확인개인정보관리 책임자 : 고창남사업자등록번호 : 106-81-51510통신판매신고번호 : 서초 제 000015호<br>
+            본점 : 서울특별시 서초구 과천대로 870-13 (방배동)사업장 : 서울특별시 마포구 상암산로 66 (상암동)<br>
+            티빙 고객센터 : 1670-1525, tving@cj.netENM 시청자상담실 (편성 문의 및 시청자 의견) : 080-080-0780<br>
+            Copyright (C) CJ ENM All Rights Reserved.
+        </p>
+    </div>
+</div>
+</footer>
+</body>
+</html>

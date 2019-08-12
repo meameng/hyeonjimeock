@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/css/swiper.css">
+    <link rel="stylesheet" href="/reset.css">
+    <link rel="stylesheet" href="style_vod_origin.css">
+    <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://kit.fontawesome.com/401484afb1.js"></script>
+    <script src="/js/swiper.js"></script>
+    <title>현지에서 먹힐까?</title>
+    <style>
+        .swiper-review {width: 370px; height: 700px; position: absolute; top: 50%; transform: translateY(-50%);}
+        .swiper-review .swiper-slide {
+            text-align: center;
+            font-size: 18px;
+            background: #fff;
+            /* Center slide text vertically */
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            -webkit-justify-content: center;
+            justify-content: center;
+            /* -webkit-box-align: center;
+            -ms-flex-align: center;
+            -webkit-align-items: center;
+            align-items: center;
+            align-content: space-around; */
+            flex-wrap: wrap;
+        }
+        .swiper-review .swiper-slide:nth-child(odd) {background: rgb(239, 239, 247);}
+        /* .reviewslide > .swiper-button-next, .swiper-review > .swiper-button-prev {transform: rotate(90deg) translateY(35%); left: 50%; margin-top: 0;} */
+        .reviewslide > .swiper-button-prev {top: 0px; transform: rotate(90deg) translateY(35%); left: 50%; margin-top: 0;}
+        .reviewslide > .swiper-button-next {top: 760px; transform: rotate(90deg) translateY(35%); left: 50%; margin-top: 0;}
+    </style>
+    <script>
+        $(function(){
+            $('.level1 > a').on("mouseenter",function(){
+                $('.headerwrap').removeClass('over').addClass('over');
+                $(".level2").hide();
+                $(this).next().show();
+            });
+             $(".headerwrap").on("mouseleave", function() {
+                $(".headerwrap").removeClass("over");
+                $(".level2").hide();
+            });
+
+            var swiper1 = new Swiper('.swiper-review', {
+                direction: 'vertical',
+                slidesPerView: 3,
+                spaceBetween:0,
+                loop:true,
+                navigation: {
+                    nextEl: '.next-review',
+                    prevEl: '.prev-review',
+                },
+            });
+            $(".category li").click(function(){
+                var idx = $(this).index();
+
+                $(".onoff li").removeClass("on");
+                $(".onoff li").eq(idx).addClass("on");
+            });
+            $(".container a").click(function(e){
+                event.preventDefault();
+            });
+            $("footer a").click(function(e){
+                event.preventDefault();
+            });
+            $(".youtube").click(function(){
+                $(this).next(".vodbox").slideDown();
+                $(this).next(".vodbox").find("iframe").delay(300).fadeIn();
+                $(this).next(".vodbox").find(".vodboxbg").delay(300).slideDown();
+                $(this).next(".vodbox").find(".swiper-vodbox").delay(300).slideDown();
+            });
+            $(".closebox").click(function(){
+                $(this).prev("iframe").fadeOut();
+                $(this).siblings(".swiper-vodbox").slideUp();
+                $(this).siblings(".vodboxbg").slideUp();
+                $(this).closest(".vodbox").delay(100).slideUp();
+            });
+            $(".swiper-vodbox a").click(function(){
+                var othervod = $(this).attr("href");
+                $(this).closest(".swiper-vodbox").siblings("iframe").attr("src",othervod);
+            });
+            $(".vodbox-next").click(function(){
+                var wrap =  $(this).siblings(".swiper-vodbox").find(".vodbox-wrap");
+                wrap.stop().animate({"margin-left":"-380px"}, function(){
+                    $(this).find(".vodbox-slide").first().appendTo(wrap);
+                    $(this).css({"margin-left":"-190px"});
+                });
+            });
+            $(".vodbox-prev").click(function(){
+                var wrap = $(this).siblings(".swiper-vodbox").find(".vodbox-wrap");
+                wrap.stop().animate({"margin-left":"0px"}, function(){
+                    $(this).find(".vodbox-slide").last().prependTo(wrap);
+                    $(this).css({"margin-left":"-190px"});
+                });
+            });
+            
+            $(".swiper-slide a").click(function(){
+                var othervod = $(this).attr("href");
+                $(this).closest(".swiper-review").siblings(".vodbox").find("iframe").attr("src",othervod);
+
+                $(this).closest(".swiper-review").siblings(".vodbox").slideDown();
+                $(this).closest(".swiper-review").siblings(".vodbox").find("iframe").delay(300).fadeIn();
+                $(this).closest(".swiper-review").siblings(".vodbox").find(".vodboxbg").delay(300).slideDown();
+                $(this).closest(".swiper-review").siblings(".vodbox").find(".swiper-vodbox").delay(300).slideDown(function(){
+                    alert("로그인 전에는 3분 미리보기만 제공됩니다. 로그인 후에 전체 감상이 가능합니다.")
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="headerwrap">
+        <div class="header">
+            <h1 class="logo"><a href="main.html"></a></h1>
+            <ul class="navi">
+                <li class="level1"><a href="#">현지에서 먹힐까?</a>
+                    <ul class="level2">
+                        <li><a href="#">프로그램소개</a></li>
+                        <li><a href="#">출연진소개</a></li>
+                    </ul>
+                </li>
+                <li><a href="recipe.html">레시피</a></li>
+                <li class="level1"><a href="vod.html">VOD</a>
+                    <ul class="level2">
+                        <li><a href="vod.html">다시보기</a></li>
+                        <li><a href="vod.html">클립영상</a></li>
+                        <li><a href="vod.html">스페셜</a></li>
+                        <li><a href="vod.html">예고</a></li>
+                    </ul>
+                </li>
+                <li><a href="#">이벤트</a></li>
+                <li><a href="#">시청자게시판</a></li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="container">
+        <h1 class="h1vod">VOD</h1>
+        <form>
+            <input type="search" placeholder="검색어를 입력해주세요.">
+        </form>
+        <div class="reviewslide">
+            <div class="swiper-container swiper-review">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <a href="https://www.youtube.com/embed/PFOjkRhl6dQ">
+                            <div class="review rev11"><i class="far fa-play-circle"></i></div>
+                            <p><span>[다시보기]</span> 현지에서 먹힐까 시즌3 11화</p>
+                        </a>
+                    </div>
+                    <div class="swiper-slide">
+                        <a href="https://www.youtube.com/embed/LBkkQqPO0F8">
+                            <div class="review rev10"><i class="far fa-play-circle"></i></div>
+                            <p><span>[다시보기]</span> 현지에서 먹힐까 시즌3 10화</p>
+                        </a>
+                    </div>
+                    <div class="swiper-slide">
+                        <a href="https://www.youtube.com/embed/7Rir7QIC_48">
+                            <div class="review rev09"><i class="far fa-play-circle"></i></div>
+                            <p><span>[다시보기]</span> 현지에서 먹힐까 시즌3 9화</p>
+                        </a>
+                    </div>
+                    <div class="swiper-slide">
+                        <a href="https://www.youtube.com/embed/3DJcC_Xg41M">
+                            <div class="review rev08"><i class="far fa-play-circle"></i></div>
+                            <p><span>[다시보기]</span> 현지에서 먹힐까 시즌3 8화</p>
+                        </a>
+                    </div>
+                    <div class="swiper-slide">
+                        <a href="https://www.youtube.com/embed/tp8YsjeRFyE">
+                            <div class="review rev07"><i class="far fa-play-circle"></i></div>
+                            <p><span>[다시보기]</span> 현지에서 먹힐까 시즌3 7화</p>
+                        </a>
+                    </div>
+                    <div class="swiper-slide">
+                        <a href="https://www.youtube.com/embed/BoRJNUcQ8wk">
+                            <div class="review rev06"><i class="far fa-play-circle"></i></div>
+                            <p><span>[다시보기]</span> 현지에서 먹힐까 시즌3 6화</p>
+                        </a>
+                    </div>
+                    <div class="swiper-slide">
+                        <a href="https://www.youtube.com/embed/o0kc5dgs6zE">
+                            <div class="review rev05"><i class="far fa-play-circle"></i></div>
+                            <p><span>[다시보기]</span> 현지에서 먹힐까 시즌3 5화</p>
+                        </a>
+                    </div>
+                    <div class="swiper-slide">
+                        <a href="https://www.youtube.com/embed/a7FNwu_hyo4">
+                            <div class="review rev04"><i class="far fa-play-circle"></i></div>
+                            <p><span>[다시보기]</span> 현지에서 먹힐까 시즌3 4화</p>
+                        </a>
+                    </div>
+                    <div class="swiper-slide">
+                        <a href="https://www.youtube.com/embed/si0HHTbJvn0">
+                            <div class="review rev03"><i class="far fa-play-circle"></i></div>
+                            <p><span>[다시보기]</span> 현지에서 먹힐까 시즌3 3화</p>
+                        </a>
+                    </div>
+                    <div class="swiper-slide">
+                        <a href="https://www.youtube.com/embed/9PYG5IEj_XE">
+                            <div class="review rev02"><i class="far fa-play-circle"></i></div>
+                            <p><span>[다시보기]</span> 현지에서 먹힐까 시즌3 2화</p>
+                        </a>
+                    </div>
+                    <div class="swiper-slide">
+                        <a href="https://www.youtube.com/embed/xVMH4viq3NI">
+                            <div class="review rev01"><i class="far fa-play-circle"></i></div>
+                            <p><span>[다시보기]</span> 현지에서 먹힐까 시즌3 1화</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="swiper-button-next next-review"></div>
+            <div class="swiper-button-prev prev-review"></div>
+            <div class="vodbox">
+                <iframe src="http://vodplayer.tving.com/embed/cjpromotion/watch?clipid=EA_253819&isfullvod=N" frameborder="0" allowfullscreen !autoplay></iframe> 
+                <i class="far fa-times-circle closebox"></i>
+                <div class="vodboxbg"></div>
+                <div class="swiper-vodbox">
+                    <div class="vodbox-wrap">
+                        <div class="vodbox-slide">
+                            <a href="https://www.youtube.com/embed/PFOjkRhl6dQ">
+                                <img src="webimg/review_11.jpg" alt="">
+                                <p>[다시보기] 현지에서 먹힐까 시즌3 11화</p>
+                            </a>
+                        </div>
+                        <div class="vodbox-slide">
+                            <a href="https://www.youtube.com/embed/LBkkQqPO0F8">
+                                <img src="webimg/review_10.jpg" alt="">
+                                <p>[다시보기] 현지에서 먹힐까 시즌3 10화</p>
+                            </a>
+                        </div>
+                        <div class="vodbox-slide">
+                            <a href="https://www.youtube.com/embed/7Rir7QIC_48">
+                                <img src="webimg/review_09.jpg" alt="">
+                                <p>[다시보기] 현지에서 먹힐까 시즌3 09화</p>
+                            </a>
+                        </div>
+                        <div class="vodbox-slide">
+                            <a href="https://www.youtube.com/embed/3DJcC_Xg41M">
+                                <img src="webimg/review_08.jpg" alt="">
+                                <p>[다시보기] 현지에서 먹힐까 시즌3 08화</p>
+                            </a>
+                        </div>
+                        <div class="vodbox-slide">
+                            <a href="https://www.youtube.com/embed/tp8YsjeRFyE">
+                                <img src="webimg/review_07.jpg" alt="">
+                                <p>[다시보기] 현지에서 먹힐까 시즌3 07화</p>
+                            </a>
+                        </div>
+                        <div class="vodbox-slide">
+                            <a href="https://www.youtube.com/embed/BoRJNUcQ8wk">
+                                <img src="webimg/review_06.jpg" alt="">
+                                <p>[다시보기] 현지에서 먹힐까 시즌3 06화</p>
+                            </a>
+                        </div>
+                        <div class="vodbox-slide">
+                            <a href="https://www.youtube.com/embed/o0kc5dgs6zE">
+                                <img src="webimg/review_05.jpg" alt="">
+                                <p>[다시보기] 현지에서 먹힐까 시즌3 05화</p>
+                            </a>
+                        </div>
+                        <div class="vodbox-slide">
+                            <a href="https://www.youtube.com/embed/a7FNwu_hyo4">
+                                <img src="webimg/review_04.jpg" alt="">
+                                <p>[다시보기] 현지에서 먹힐까 시즌3 04화</p>
+                            </a>
+                        </div>
+                        <div class="vodbox-slide">
+                            <a href="https://www.youtube.com/embed/si0HHTbJvn0">
+                                <img src="webimg/review_03.jpg" alt="">
+                                <p>[다시보기] 현지에서 먹힐까 시즌3 03화</p>
+                            </a>
+                        </div>
+                        <div class="vodbox-slide">
+                            <a href="https://www.youtube.com/embed/9PYG5IEj_XE">
+                                <img src="webimg/review_02.jpg" alt="">
+                                <p>[다시보기] 현지에서 먹힐까 시즌3 02화</p>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="vodbox-next"><i class="fas fa-caret-right"></i></div>
+                <div class="vodbox-prev"><i class="fas fa-caret-left"></i></div>
+            </div>
+        </div>
+        <div class="fullvod">
+            <ul class="category">
+                <li><a href="#">클립영상</a></li>
+                <li><a href="#">스페셜</a></li>
+                <li><a href="#">예고편</a></li>
+            </ul>
+            <ul class="onoff">
+                <li class="on">
+                    <a href="#" class="youtube"><div class="mainVOD clip"><i class="far fa-play-circle"></i></div></a>
+                    <div class="vodbox">
+                        <iframe src="http://vodplayer.tving.com/embed/cjpromotion/watch?clipid=EA_253819&isfullvod=N" frameborder="0" allowfullscreen !autoplay></iframe> 
+                        <i class="far fa-times-circle closebox"></i>
+                        <div class="vodboxbg"></div>
+                        <div class="swiper-vodbox">
+                            <div class="vodbox-wrap">
+                                <div class="vodbox-slide">
+                                    <a href="http://vodplayer.tving.com/embed/cjpromotion/watch?clipid=EA_253821&isfullvod=N">
+                                        <img src="webimg/vod_clip01.jpg" alt="">
+                                        <p>존박 간당간당 할 것 같아요 먹퀘스트 달성할 수 있을까?</p>
+                                    </a>
+                                </div>
+                                <div class="vodbox-slide">
+                                    <a href="http://vodplayer.tving.com/embed/cjpromotion/watch?clipid=EA_253819&isfullvod=N">
+                                        <img src="webimg/vod_clip02.jpg" alt="">
+                                        <p>(반갑) 연복 피셜 '미국에서 제일 친절한 사람♡'</p>
+                                    </a>
+                                </div>
+                                <div class="vodbox-slide">
+                                    <a href="http://vodplayer.tving.com/embed/cjpromotion/watch?clipid=EA_253818&isfullvod=N">
+                                        <img src="webimg/vod_clip03.jpg" alt="">
+                                        <p>짜장면에 와인 떠올리는 미식가 (ft. 흡사 소믈리에)</p>
+                                    </a>
+                                </div>
+                                <div class="vodbox-slide">
+                                    <a href="http://vodplayer.tving.com/embed/cjpromotion/watch?clipid=EA_253817&isfullvod=N">
+                                        <img src="webimg/vod_clip04.jpg" alt="">
+                                        <p>워홀러 허경완, 칼질 열등생에서 프로 칼질러로 거듭나다!</p>
+                                    </a>
+                                </div>
+                                <div class="vodbox-slide">
+                                    <a href="http://vodplayer.tving.com/embed/cjpromotion/watch?clipid=EA_253815&isfullvod=N">
+                                        <img src="webimg/vod_clip05.jpg" alt="">
+                                        <p>고객 감동♡ 존박의 센스 넘치는 서비스!</p>
+                                    </a>
+                                </div>
+                                <div class="vodbox-slide">
+                                    <a href="http://vodplayer.tving.com/embed/cjpromotion/watch?clipid=EA_253814&isfullvod=N">
+                                        <img src="webimg/vod_clip06.jpg" alt="">
+                                        <p>미국이 짜장면에 미쳤어! 해물 짜장면으로 업그레이드!</p>
+                                    </a>
+                                </div>
+                                <div class="vodbox-slide">
+                                    <a href="http://vodplayer.tving.com/embed/cjpromotion/watch?clipid=EA_253813&isfullvod=N">
+                                        <img src="webimg/vod_clip07.jpg" alt="">
+                                        <p>오프 더 그리드의 지원, 덕분에 한시름 놓는 복스푸드!</p>
+                                    </a>
+                                </div>
+                                <div class="vodbox-slide">
+                                    <a href="http://vodplayer.tving.com/embed/cjpromotion/watch?clipid=EA_253812&isfullvod=N">
+                                        <img src="webimg/vod_clip08.jpg" alt="">
+                                        <p>복스푸드의 급 영업중단, 먹퀘스트를 깨기 위한 노선 변경</p>
+                                    </a>
+                                </div>
+                                <div class="vodbox-slide">
+                                    <a href="http://vodplayer.tving.com/embed/cjpromotion/watch?clipid=EA_253788&isfullvod=N">
+                                        <img src="webimg/vod_clip09.jpg" alt="">
+                                        <p>쫄깃쫄깃 대박난 면♡ 특별히 맛있는 면의 비밀 #계란면</p>
+                                    </a>
+                                </div>
+                                <div class="vodbox-slide">
+                                    <a href="http://vodplayer.tving.com/embed/cjpromotion/watch?clipid=EA_253782&isfullvod=N">
+                                        <img src="webimg/vod_clip10.jpg" alt="">
+                                        <p>연복 셰프의 '짬짜면' 불 쇼♨ (어맛! 이건 꼭 찍어야 해☆)</p>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="vodbox-next"><i class="fas fa-caret-right"></i></div>
+                        <div class="vodbox-prev"><i class="fas fa-caret-left"></i></div>
+                    </div>
+                </li>
+                <li>
+                    <a href="#" class="youtube"><div class="mainVOD preview"><i class="far fa-play-circle"></i></div></a>
+                    <div class="vodbox">
+                        <iframe src="http://vodplayer.tving.com/embed/cjpromotion/watch?clipid=EA_252540&isfullvod=N" frameborder="0" allowfullscreen !autoplay></iframe> 
+                        <i class="far fa-times-circle closebox"></i>
+                        <div class="vodboxbg"></div>
+                        <div class="swiper-vodbox">
+                            <div class="vodbox-wrap">
+                                <div class="vodbox-slide">
+                                    <a href="http://vodplayer.tving.com/embed/cjpromotion/watch?clipid=EA_252542&isfullvod=N">
+                                        <img src="webimg/vod_special01.jpg" alt="">
+                                        <p>역시 짜증날땐 짜장면! 짜장면 한그릇에 힘든 하루 힐링하는 친구들!</p>
+                                    </a>
+                                </div>
+                                <div class="vodbox-slide">
+                                    <a href="http://vodplayer.tving.com/embed/cjpromotion/watch?clipid=EA_252540&isfullvod=N">
+                                        <img src="webimg/vod_special02.jpg" alt="">
+                                        <p>아기 부모님들 극공감, 4개월 아기보며 교대로 밥먹기!</p>
+                                    </a>
+                                </div>
+                                <div class="vodbox-slide">
+                                    <a href="http://vodplayer.tving.com/embed/cjpromotion/watch?clipid=EA_252484&isfullvod=N">
+                                        <img src="webimg/vod_special03.jpg" alt="">
+                                        <p>미국에서 커플템으로 거듭난 코리안 짬짜면!</p>
+                                    </a>
+                                </div>
+                                <div class="vodbox-slide">
+                                    <a href="http://vodplayer.tving.com/embed/cjpromotion/watch?clipid=EA_252481&isfullvod=N">
+                                        <img src="webimg/vod_special04.jpg" alt="">
+                                        <p>짜장으로 콧수염그리며 음미하는 미국 꼬마 손님</p>
+                                    </a>
+                                </div>
+                                <div class="vodbox-slide">
+                                    <a href="http://vodplayer.tving.com/embed/cjpromotion/watch?clipid=EA_252475&isfullvod=N">
+                                        <img src="webimg/vod_special05.jpg" alt="">
+                                        <p>흐뭇한 표정으로 5분 컷ㅋㅋㅋ 연복 갈비만두 순삭 현장!</p>
+                                    </a>
+                                </div>
+                                <div class="vodbox-slide">
+                                    <a href="http://vodplayer.tving.com/embed/cjpromotion/watch?clipid=EA_251211&isfullvod=N">
+                                        <img src="webimg/vod_special06.jpg" alt="">
+                                        <p>더 먹어봐야겠어.. 이연복 만두 조사 들어간 FBI 요원(?)</p>
+                                    </a>
+                                </div>
+                                <div class="vodbox-slide">
+                                    <a href="http://vodplayer.tving.com/embed/cjpromotion/watch?clipid=EA_251204&isfullvod=N">
+                                        <img src="webimg/vod_special07.jpg" alt="">
+                                        <p>이연복 갈비만두 맛에 '최고의 날' 선언해버린 FBI(?) 직원들</p>
+                                    </a>
+                                </div>
+                                <div class="vodbox-slide">
+                                    <a href="http://vodplayer.tving.com/embed/cjpromotion/watch?clipid=EA_251205&isfullvod=N">
+                                        <img src="webimg/vod_special08.jpg" alt="">
+                                        <p>초고퀄이잖아! 연복의 해물덮밥을 본 FBI 직원(?)들의 반응</p>
+                                    </a>
+                                </div>
+                                <div class="vodbox-slide">
+                                    <a href="http://vodplayer.tving.com/embed/cjpromotion/watch?clipid=EA_251195&isfullvod=N">
+                                        <img src="webimg/vod_special09.jpg" alt="">
+                                        <p>떡갈비+김치볶음밥 한큐에 비벼버린 샌프란 대식가 등장!</p>
+                                    </a>
+                                </div>
+                                <div class="vodbox-slide">
+                                    <a href="http://vodplayer.tving.com/embed/cjpromotion/watch?clipid=EA_251189&isfullvod=N">
+                                        <img src="webimg/vod_special10.jpg" alt="">
+                                        <p>삼겹살은 신세계야! 연복's 동파육 풍미에 취해버린 미국 모녀</p>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="vodbox-next"><i class="fas fa-caret-right"></i></div>
+                        <div class="vodbox-prev"><i class="fas fa-caret-left"></i></div>
+                    </div>
+                </li>
+                <li>
+                    <a href="#" class="youtube"><div class="mainVOD special"><i class="far fa-play-circle"></i></div></a>
+                    <div class="vodbox">
+                        <iframe src="http://vodplayer.tving.com/embed/cjpromotion/watch?clipid=EA_253048&isfullvod=N" frameborder="0" allowfullscreen !autoplay></iframe> 
+                        <i class="far fa-times-circle closebox"></i>
+                        <div class="vodboxbg"></div>
+                        <div class="swiper-vodbox">
+                            <div class="vodbox-wrap">
+                                <div class="vodbox-slide">
+                                    <a href="http://vodplayer.tving.com/embed/cjpromotion/watch?clipid=EA_254408&isfullvod=N">
+                                        <img src="webimg/vod_prev01.jpg" alt="">
+                                        <p>[예고] 현지먹3 '특별판' 생방송 릴레이 쿡방 + 미방분 대공개!!!</p>
+                                    </a>
+                                </div>
+                                <div class="vodbox-slide">
+                                    <a href="http://vodplayer.tving.com/embed/cjpromotion/watch?clipid=EA_253048&isfullvod=N">
+                                        <img src="webimg/vod_prev02.jpg" alt="">
+                                        <p>[예고] 위기의 푸드트럭, 과연 얼마를 벌었을까?!</p>
+                                    </a>
+                                </div>
+                                <div class="vodbox-slide">
+                                    <a href="http://vodplayer.tving.com/embed/cjpromotion/watch?clipid=EA_251791&isfullvod=N">
+                                        <img src="webimg/vod_prev03.jpg" alt="">
+                                        <p>[예고] 시리즈 사상 역대급 규모의 장사가 시작된다!!</p>
+                                    </a>
+                                </div>
+                                <div class="vodbox-slide">
+                                    <a href="http://vodplayer.tving.com/embed/cjpromotion/watch?clipid=EA_250326&isfullvod=N">
+                                        <img src="webimg/vod_prev04.jpg" alt="">
+                                        <p>[예고] 전설의 복만두가 진화한다!! 이번엔 복'갈비'만두!?</p>
+                                    </a>
+                                </div>
+                                <div class="vodbox-slide">
+                                    <a href="http://vodplayer.tving.com/embed/cjpromotion/watch?clipid=EA_249048&isfullvod=N">
+                                        <img src="webimg/vod_prev05.jpg" alt="">
+                                        <p>[예고] 코리안 떡갈비 패티로 무장한 복스푸드 버거?!</p>
+                                    </a>
+                                </div>
+                                <div class="vodbox-slide">
+                                    <a href="http://vodplayer.tving.com/embed/cjpromotion/watch?clipid=EA_247670&isfullvod=N">
+                                        <img src="webimg/vod_prev06.jpg" alt="">
+                                        <p>[예고] 드디어 이민우 합류!! 민우와 함께하는 첫 메뉴는 깍두기 볶음밥!</p>
+                                    </a>
+                                </div>
+                                <div class="vodbox-slide">
+                                    <a href="http://vodplayer.tving.com/embed/cjpromotion/watch?clipid=EA_246046&isfullvod=N">
+                                        <img src="webimg/vod_prev07.jpg" alt="">
+                                        <p>[예고]비밀병기 치즈도그로 최대매출 달성?!</p>
+                                    </a>
+                                </div>
+                                <div class="vodbox-slide">
+                                    <a href="http://vodplayer.tving.com/embed/cjpromotion/watch?clipid=EA_244448&isfullvod=N">
+                                        <img src="webimg/vod_prev08.jpg" alt="">
+                                        <p>핫도그+치킨+짜장면까지?! 역대 최다 인파의 공습!</p>
+                                    </a>
+                                </div>
+                                <div class="vodbox-slide">
+                                    <a href="http://vodplayer.tving.com/embed/cjpromotion/watch?clipid=EA_243790&isfullvod=N">
+                                        <img src="webimg/vod_prev09.jpg" alt="">
+                                        <p>[다음이야기] 역대 최다 손님!! 핫도그의 나라에 K-도그를!</p>
+                                    </a>
+                                </div>
+                                <div class="vodbox-slide">
+                                    <a href="http://vodplayer.tving.com/embed/cjpromotion/watch?clipid=EA_243216&isfullvod=N">
+                                        <img src="webimg/vod_prev10.jpg" alt="">
+                                        <p>[예고]켄터키 치킨 종주국에 나타난 '연복이 두마리치킨'!!</p>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="vodbox-next"><i class="fas fa-caret-right"></i></div>
+                        <div class="vodbox-prev"><i class="fas fa-caret-left"></i></div>
+                    </div>
+                </li>
+            </ul>
+            <ul class="morectt">
+                <li><a href="#">#먹방</a></li>
+                <li><a href="#">#감동</a></li>
+                <li><a href="#">#위기</a></li>
+                <li><a href="#">#웃음</a></li>
+                <li><a href="#">#요리</a></li>
+                <li><a href="#">#힐링</a></li>
+                <li><a href="#">#슬픔</a></li>
+            </ul>
+        </div>
+    </div>
+    <footer>
+        <div class="footnav">
+            <ul>
+                <li><a href="#">회사소개</a></li>
+                <li><a href="#">광고/제휴문의</a></li>
+                <li><a href="#">이용약관</a></li>
+                <li><a href="#">개인정보처리방침</a></li>
+                <li><a href="#">청소년보호정책</a></li>
+                <li><a href="#">법적고지</a></li>
+                <li><a href="#">이메일무단수집거부</a></li>
+                <li><a href="#">큐톤표</a></li>
+                <li><a href="#">고객센터</a></li>
+            </ul>
+        </div>
+        <div class="addressbg">
+            <div class="address">
+                <div class="cjlogo">
+                    <img src="webimg/cjenm.png" alt="">
+                </div>
+                <p class="company">
+                    대표이사 : 허민회, 허민호 | 사업자정보확인개인정보관리 책임자 : 고창남사업자등록번호 : 106-81-51510통신판매신고번호 : 서초 제 000015호<br>
+                    본점 : 서울특별시 서초구 과천대로 870-13 (방배동)사업장 : 서울특별시 마포구 상암산로 66 (상암동)<br>
+                    티빙 고객센터 : 1670-1525, tving@cj.netENM 시청자상담실 (편성 문의 및 시청자 의견) : 080-080-0780<br>
+                    Copyright (C) CJ ENM All Rights Reserved.
+                </p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
